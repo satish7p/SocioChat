@@ -2,7 +2,6 @@ package com.sociochat.sociochatbackend.Dao;
 
 import java.util.List;
 
-import com.sociochat.sociochatbackend.model.Blog;
 import com.sociochat.sociochatbackend.model.Forum;
 
 public interface ForumDao {
@@ -12,6 +11,6 @@ public boolean deleteForum(Forum forum);
 public Forum getForum(int forumId);
 public List <Forum> getAllForum();
 public boolean approveForum(Forum forum);
-
+public boolean rejectForum(Forum forum);
 
 }

@@ -3,8 +3,10 @@ package com.sociochat.sociochatbackend.test;
 import static org.junit.Assert.*;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
@@ -25,7 +27,7 @@ public class BlogDaoTest
 		
 		blogDAO=(BlogDao)context.getBean("blogDAO");
 	}
-	
+	@Ignore
 	@Test
 	public void addBlogTest()
 	{
@@ -42,6 +44,53 @@ public class BlogDaoTest
 		assertTrue("Problem in Inserting Blog",blogDAO.addBlog(blog));
 	
 	}
+	@Ignore
+	@Test
+	public void UpdateBlogTest()
+	{
+		Blog blog=(Blog)blogDAO.getBlog(1001);
+		blog.setBlogContent("OOPS, Exception");
+		blog.setBlogName("Java");
+		assertTrue("Problem in updating", blogDAO.updateBlog(blog));
+	}
+	@Ignore
+	@Test
+	public void deleteBlogTest()
+	{
+		Blog blog=(Blog)blogDAO.getBlog(2);
 	
-}
+		assertTrue("Problem in deletion", blogDAO.deleteBlog(blog));
+	}
+	@Ignore
+	@Test
+	public void getAllBlogTest()
+	{
+		List<Blog> blogList=(List<Blog>)blogDAO.getAllBlogs();
+		assertNotNull("Blog List not found",blogList.get(0));
+		for(Blog blog:blogList)
+		{
+			System.out.println("Blog Id:"+ blog.getBlogId()+":::"+ "Blog Name"+blog.getBlogName());
+		}
+	}
+		
+		@Test 
+		public void approveBlog()
+		{
+			Blog blog=(Blog)blogDAO.getBlog(1001);
+			assertTrue("Problem in Approving", blogDAO.approveBlog(blog));
+			
+			}
+
+	@Ignore	
+		@Test 
+		public void rejectBlog()
+		{
+			Blog blog=(Blog)blogDAO.getBlog(1001);
+			assertTrue("Problem in Approving", blogDAO.rejectBlog(blog));
+			
+			}
+	
+	}
+	
+
 

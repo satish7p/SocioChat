@@ -24,6 +24,8 @@ public class UserDetail implements Serializable{
 		private String emailId;
 		private String isOnline;
 		private String role;
+
+		private String UserName;
 		
 		public int getUserId() {
 			return userId;
@@ -54,6 +56,12 @@ public class UserDetail implements Serializable{
 		}
 		public void setRole(String role) {
 			this.role = role;
+		}
+		public String getUserName() {
+			return UserName;
+		}
+		public void setUserName(String userName) {
+			UserName = userName;
 		}
 		
 	}

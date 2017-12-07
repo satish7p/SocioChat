@@ -1,6 +1,5 @@
 package com.sociochat.sociochatbackend.test;
 
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
@@ -20,57 +19,84 @@ import com.sociochat.sociochatbackend.model.Forum;
 
 public class ForumDaoTest {
 
-public static final Logger log = Logger.getLogger(ForumDaoTest.class.getName());
+	static ForumDao forumDAO;
+	
 
-private static final Object Forum = null;
-public static AnnotationConfigApplicationContext context;
-private static ForumDao forumDAO;
-private Forum forum;
-@BeforeClass
-public static void init(){
-context =new AnnotationConfigApplicationContext();
-context.scan("com.SocialNetworkBackEnd.*");
-context.refresh();
-forumDAO =(ForumDao) context.getBean("forumDAO");
-}
-//@Ignore
-@Test
-public  void addForumTest() {
-Forum forum = new Forum();
-forum.setForumName("Advance Java");
-forum.setForumContent(" Advance java concept");
-forum.setStatus("B");
-forum.setUserId(2);
-forum.setCreateDate(new Date());
-assertEquals("Failed to add user!",true,forumDAO.addForum(forum));
-} 
-@Ignore
-@Test
-public void getForumTest(){
-Forum forum = forumDAO.getForum(1);
-assertNotEquals("forum Not Found", forum);
-log.info("Forum Name:"+forum.getForumName());
-log.info("Blog Content"+forum.getForumContent());
-}
-@Ignore
-@Test
-public void getAllForumTest(){
-    
-List<Forum> forumList=(List<Forum>)forumDAO.getAllForum();
-assertNotNull("Forum List Not Found", forumList.get(0));
-for(Forum forum:forumList)
-{
-log.info("Forum ID"+forum.getForumId()+"::"+"Forum Name:"+forum.getForumName());
-assertTrue("Problem in Deletion", forumDAO.deleteForum(forum));
-}
-}
-@Ignore
-@Test
-public void updateForumTest(){
-Forum forum = forumDAO.getForum(1);
-forum.setForumContent("wcd");
-forum.setForumName("app");
-assertTrue("Problem in updation",forumDAO.updateForum(forum));
-}
-}
 
+	@BeforeClass
+		public static void initialize()
+		{
+			AnnotationConfigApplicationContext context=new AnnotationConfigApplicationContext();
+			context.scan("com.sociochat.sociochatbackend");
+			context.refresh();
+			
+			forumDAO=(ForumDao)context.getBean("forumDAO");
+		}
+	@Ignore
+		@Test
+		public void addForumTest()
+		{
+			Forum Forum=new Forum();
+			
+			Forum.setForumId(1001);
+			Forum.setForumName("Core Java");
+			Forum.setForumContent("It is based on Simple Java Concept");
+			Forum.setUsername("sunil");
+			Forum.setStatus("A");
+			Forum.setLikes(3);
+			Forum.setCreateDate(new java.util.Date());
+			
+			assertTrue("Problem in Inserting Forum",forumDAO.addForum(Forum));
+		
+		}
+	
+	@Ignore
+	@Test
+	public void UpdateForumTest()
+	{
+		Forum Forum=(Forum)forumDAO.getForum(1001);
+		Forum.setForumContent("OOPS, Exception");
+		Forum.setForumName("Java");
+		assertTrue("Problem in updating", forumDAO.updateForum(Forum));
+	}
+	
+	@Ignore
+	@Test
+	public void deleteForumTest()
+	{
+		Forum Forum=(Forum)forumDAO.getForum(1001);
+		assertTrue("Problem in deletion", forumDAO.deleteForum(Forum));
+	}
+		
+	@Ignore
+		@Test
+		public void getAllForumTest()
+		{
+			List<Forum> ForumList=(List<Forum>)forumDAO.getAllForum();
+			assertNotNull("Forum List not found",ForumList.get(0));
+			for(Forum Forum:ForumList)
+			{
+				System.out.println("Forum Id:"+ Forum.getForumId()+":::"+ "Forum Name"+Forum.getForumName());
+			}
+			
+		}
+	
+		
+		@Ignore
+		@Test 
+		public void approveForum()
+		{
+			Forum Forum=(Forum)forumDAO.getForum(1001);
+			assertTrue("Problem in Approving", forumDAO.approveForum(Forum));
+			
+			}
+
+		
+		@Test 
+		public void rejectForum()
+		{
+			Forum Forum=(Forum)forumDAO.getForum(1001);
+			assertTrue("Problem in Approving", forumDAO.rejectForum(Forum));
+			
+			}
+}

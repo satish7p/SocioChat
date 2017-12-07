@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.sociochat.sociochatbackend.model.Blog;
 import com.sociochat.sociochatbackend.model.Forum;
+import com.sociochat.sociochatbackend.model.Job;
 import com.sociochat.sociochatbackend.model.UserDetail;
 import com.sociochat.sociochatbackend.Dao.BlogDao;
 import com.sociochat.sociochatbackend.Dao.BlogDaoimpl;
 import com.sociochat.sociochatbackend.Dao.ForumDao;
 import com.sociochat.sociochatbackend.Dao.ForumDaoimpl;
+import com.sociochat.sociochatbackend.Dao.JobDao;
+import com.sociochat.sociochatbackend.Dao.JobDaoimpl;
 import com.sociochat.sociochatbackend.Dao.UserDao;
 import com.sociochat.sociochatbackend.Dao.UserDaoimpl;
 
@@ -45,7 +48,7 @@ public class DBConfig
 		{
 			Properties properties=new Properties();
 			properties.setProperty("hibernate.hbm2ddl.auto", "update");
-			properties.put("hibernate.dialect","org.hibernate.dialect.Oracle10gDialect");
+			properties.put("hibernate.dialect","org.hibernate.dialect.Oracle12cDialect");
 			return properties;
 		}
 		
@@ -57,6 +60,7 @@ public class DBConfig
 			localSessionFactoryBuilder.addAnnotatedClass(Blog.class);
 			localSessionFactoryBuilder.addAnnotatedClass(UserDetail.class);
 			localSessionFactoryBuilder.addAnnotatedClass(Forum.class);
+			localSessionFactoryBuilder.addAnnotatedClass(Job.class);
 			System.out.println("SessionFactory Bean Created");
 			return localSessionFactoryBuilder.buildSessionFactory();
 		}
@@ -67,23 +71,29 @@ public class DBConfig
 			return new HibernateTransactionManager(sessionFactory);
 		}
 		
-		@Bean(name="BlogDao")
+		@Bean(name="blogDAO")
 		public BlogDao getBlogDao(SessionFactory sessionFactory)
 		{
 			System.out.println("BlogDao object Created");
 			return new BlogDaoimpl(sessionFactory);
 		}
-		@Bean(name="UserDao")
+		@Bean(name="userDAO")
 		public UserDao getUserDao(SessionFactory sessionFactory)
 		{
 			System.out.println("UserDao object Created");
 			return new UserDaoimpl(sessionFactory);
 		}
-		@Bean(name="ForumDao")
+		@Bean(name="forumDAO")
 		public ForumDao getForumDao(SessionFactory sessionFactory)
 		{
-			System.out.println("UserDao object Created");
+			System.out.println("ForumDao object Created");
 			return new ForumDaoimpl(sessionFactory);
+		}
+		@Bean(name="jobDAO")
+		public JobDao getJobDao(SessionFactory sessionFactory)
+		{
+			System.out.println("JobDao object Created");
+			return new JobDaoimpl(sessionFactory);
 		}
 }
 

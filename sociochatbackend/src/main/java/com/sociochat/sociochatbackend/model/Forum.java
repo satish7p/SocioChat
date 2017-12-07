@@ -3,19 +3,34 @@ package com.sociochat.sociochatbackend.model;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 
 import org.springframework.stereotype.Component;
 @Component
 @Entity
 
 public class Forum {
-public int getUserId() {
-return UserId;
+	@Id
+	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQUENCE1")
+	@SequenceGenerator(name="SEQUENCE1", sequenceName="SEQUENCE1", allocationSize=1)
+	int forumId;
+	String forumName;
+	String forumContent;
+	String username;
+	String status;
+	int likes;
+	Date createDate;
+	
+public int getForumId() {
+		return forumId;
 }
-public void setUserId(int userId) {
-UserId = userId;
+public void setForumId(int forumId) {
+		this.forumId = forumId;
 }
+
 public String getForumName() {
 return forumName;
 }
@@ -52,19 +67,5 @@ return createDate;
 public void setCreateDate(Date createDate) {
 this.createDate = createDate;
 }
-@Id
-int UserId;
-int ForumId;
-public int getForumId() {
-return ForumId;
-}
-public void setForumId(int forumId) {
-ForumId = forumId;
-}
-String forumName;
-String forumContent;
-String username;
-String status;
-int likes;
-Date createDate;
+
 }
