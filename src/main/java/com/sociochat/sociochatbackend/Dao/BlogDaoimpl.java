@@ -2,6 +2,7 @@ package com.sociochat.sociochatbackend.Dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sociochat.sociochatbackend.model.Blog;
 
 @Repository("blogDAO")
+@Transactional
 public class BlogDaoimpl implements BlogDao
 {
 	@Autowired
@@ -22,11 +24,12 @@ public class BlogDaoimpl implements BlogDao
 	}
 	
 	@Transactional
-
+    
 	public boolean addBlog(Blog blog) 
 	{
 		try
 		{
+			System.out.println("1");
 		sessionFactory.getCurrentSession().save(blog);
 		return true;
 		}
@@ -39,7 +42,7 @@ public class BlogDaoimpl implements BlogDao
 	
 	
 	@Transactional
-	@Override
+
 	public boolean updateBlog(Blog blog)  {
 		try{
 			sessionFactory.getCurrentSession().saveOrUpdate(blog);
@@ -74,7 +77,7 @@ public class BlogDaoimpl implements BlogDao
 
 	
 	@Transactional
-	@Override
+
 	public Blog getBlog(int blogId)
 	  {
      Session session=sessionFactory.openSession();
@@ -86,7 +89,7 @@ public class BlogDaoimpl implements BlogDao
 
 	
 
-	@Override
+	
 	public List<Blog> getAllBlogs() 
 	{
 		Session session = sessionFactory.openSession();
@@ -96,7 +99,6 @@ public class BlogDaoimpl implements BlogDao
 	}
 	
 	@Transactional
-	@Override
 		public boolean approveBlog(Blog blog) {
 		try
 		{
@@ -112,7 +114,7 @@ public class BlogDaoimpl implements BlogDao
 	
 	}
 	@Transactional
-	@Override
+
 	public boolean rejectBlog(Blog blog) {
 		try
 		{

@@ -13,9 +13,10 @@ import org.springframework.stereotype.Component;
 @Entity
 
 public class Forum {
+	
 	@Id
-	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="SEQUENCE1")
-	@SequenceGenerator(name="SEQUENCE1", sequenceName="SEQUENCE1", allocationSize=1)
+	@GeneratedValue(strategy=GenerationType.AUTO)
+	
 	int forumId;
 	String forumName;
 	String forumContent;

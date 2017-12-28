@@ -2,6 +2,7 @@ package com.sociochat.sociochatbackend.Dao;
 
 import java.util.List;
 
+import org.hibernate.Query;
 import org.hibernate.Session;
 //import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -23,16 +24,11 @@ public class UserDaoimpl  implements UserDao{
 	}
 
 	@Transactional
-	@Override
 	public boolean addUser(UserDetail user) {
 		try
 		{
-			Session session=sessionfactory.openSession();
-			Transaction transaction=session.getTransaction();
-			transaction.begin();
-			session.save(user);
-			transaction.commit();
-			session.close();
+			sessionfactory.getCurrentSession().save(user);
+			System.out.println("added the user");
 			/*System.out.println("1");
 		    System.out.println(sessionfactory);
 
@@ -45,8 +41,8 @@ public class UserDaoimpl  implements UserDao{
 		}
 		return false;
 	}
+	
 	@Transactional
-	@Override
 	public boolean updateOnlineStatus(String status, UserDetail user) {
 		try
 		{
@@ -60,8 +56,8 @@ public class UserDaoimpl  implements UserDao{
 			return false;
 		}
 	}
-	  @Transactional
-		@Override
+	
+	  @Transactional	
 	public boolean updateUser(UserDetail user) {
 		
 		try{
@@ -75,16 +71,17 @@ public class UserDaoimpl  implements UserDao{
 			}
 	}
 	
-@Override
+
 	public List<UserDetail> getAllUsers() {
-		Session session = sessionfactory.openSession();
-		List<UserDetail> userlist=(List<UserDetail>)session.createQuery("from UserDetail").list();
-		session.close();
-		return userlist;
+	Session session = sessionfactory.openSession();
+	String hql="from UserDetail";
+	Query query=session.createQuery(hql);
+	session.close();
+	return query.list();
 	}
 
-@Transactional
-	@Override
+
+
 	public UserDetail getUser(int userId) {
 	     Session session=sessionfactory.openSession();
 	     UserDetail user=session.get(UserDetail.class,userId);
@@ -93,7 +90,6 @@ public class UserDaoimpl  implements UserDao{
 			return user;
 		}
 	@Transactional
-	@Override
 	public boolean deleteUser(UserDetail user) {
 		try
 		{

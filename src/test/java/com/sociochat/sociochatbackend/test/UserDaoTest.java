@@ -25,25 +25,26 @@ public class UserDaoTest
 		context.scan("com.sociochat.sociochatbackend");
 		context.refresh();
 		
-		userDAO=(UserDao)context.getBean("UserDao");
+		userDAO=(UserDao)context.getBean("userDAO");
 	}
 	
 	@Test
 	public void addUserDetailTest()
 	{
 		UserDetail user=new UserDetail();
-		
-		user.setUserId(12);
-		user.setRole("user");
+		user.setUserName("hello");
+		user.setRole("Admin");
 		user.setEmailId("abc@gmail.com");
 		user.setIsOnline("N");
 		user.setPassword("aabb");
 		System.out.println("check1");
 		System.out.println(userDAO);
+		System.out.println("userdao object"+userDAO);
 		assertTrue("Problem in Inserting User",userDAO.addUser(user));
 		System.out.println("check2");
 		System.out.println("EmailID:"+user.getEmailId());
 	}
+	@Ignore
 	@Test
 	public void getAllUser()
 	{

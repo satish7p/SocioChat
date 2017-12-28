@@ -1,29 +1,33 @@
 package com.sociochat.sociochatbackend.Dao;
 
 
+import java.util.List;
+
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sociochat.sociochatbackend.model.Job;
+import com.sociochat.sociochatbackend.model.JobDetail;
 
 @Repository("jobDAO")
 @Transactional    //all methods are run under transaction
-public class JobDaoimpl implements JobDAO{
+public class JobDaoimpl implements JobDao{
 
 @Autowired
-private SessionFactory SessionFactory;
+private SessionFactory sessionFactory;
 
-public JobDaoimpl(SessionFactory sessionFactory) {
-	this.SessionFactory=sessionFactory;
-	// TODO Auto-generated constructor stub
+public JobDaoimpl( SessionFactory sessionFactory) {
+	this.sessionFactory=sessionFactory;
 }
 
-public boolean addJob(Job job) {
+
+@Transactional
+public boolean addJob(JobDetail job) {
 	try {
-		SessionFactory.getCurrentSession().save(job);
+		sessionFactory.getCurrentSession().save(job);
 		return true;
 		} catch (Exception e) {
 		e.printStackTrace();
@@ -31,37 +35,55 @@ public boolean addJob(Job job) {
 		}
 }
 
-public boolean updateJob(Job job) {
+
+@Transactional
+public boolean updateJob(JobDetail job) {
 	try{
-		SessionFactory.getCurrentSession().saveOrUpdate(job);
+		sessionFactory.getCurrentSession().saveOrUpdate(job);
 		return true;
 		}
 		catch(Exception e)
 		{
 		e.printStackTrace();
-	return false;
+		return false;
 		}
 }
 
-public boolean deleteJob(Job job) {
-	try{
-		SessionFactory.getCurrentSession().delete(job);
+@Transactional
+public boolean deleteJob(JobDetail job) {
+	try
+	{
+		sessionFactory.getCurrentSession().delete(job);
 		return true;
-		}
-		catch(Exception e)
-		{
-		System.out.println("Exception Occured"+e);
-	return false;
-		}	
+		
+	}
+	catch( Exception e)
+	{
+		System.out.println("Exception occured"+e);
+		return false;
+	}
 }
 
-public Job getJob(int jobId) {
-	Session session = SessionFactory.openSession();
-	Job job = session.get(Job.class, jobId);
-	session.close();
-	return job;
 
-	}
+
+
+public JobDetail getJob(int jobId) {
+	Session session=sessionFactory.openSession();
+    JobDetail job=session.get(JobDetail.class,jobId);
+    session.close();
+    
+		return job;
+
+}
+
+
+public List<JobDetail> getAllJob() {
+	Session session = sessionFactory.openSession();
+	String hql="from JobDetail";
+	Query query=session.createQuery(hql);
+	session.close();
+	return query.list();
+}
 
 
 }

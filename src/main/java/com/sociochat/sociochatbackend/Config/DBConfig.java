@@ -13,22 +13,28 @@ import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBuilder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.sociochat.sociochatbackend.model.Blog;
-import com.sociochat.sociochatbackend.model.Forum;
-import com.sociochat.sociochatbackend.model.Job;
-import com.sociochat.sociochatbackend.model.UserDetail;
+import com.sociochat.sociochatbackend.Dao.BlogCommentsDao;
+import com.sociochat.sociochatbackend.Dao.BlogCommentsDaoimpl;
 import com.sociochat.sociochatbackend.Dao.BlogDao;
 import com.sociochat.sociochatbackend.Dao.BlogDaoimpl;
+import com.sociochat.sociochatbackend.Dao.ForumCommentsDao;
+import com.sociochat.sociochatbackend.Dao.ForumCommentsDaoimpl;
 import com.sociochat.sociochatbackend.Dao.ForumDao;
 import com.sociochat.sociochatbackend.Dao.ForumDaoimpl;
-import com.sociochat.sociochatbackend.Dao.JobDAO;
+import com.sociochat.sociochatbackend.Dao.JobDao;
 import com.sociochat.sociochatbackend.Dao.JobDaoimpl;
 import com.sociochat.sociochatbackend.Dao.UserDao;
 import com.sociochat.sociochatbackend.Dao.UserDaoimpl;
+import com.sociochat.sociochatbackend.model.Blog;
+import com.sociochat.sociochatbackend.model.BlogComments;
+import com.sociochat.sociochatbackend.model.Forum;
+import com.sociochat.sociochatbackend.model.ForumComments;
+import com.sociochat.sociochatbackend.model.JobDetail;
+import com.sociochat.sociochatbackend.model.UserDetail;
 
 @Configuration
 @EnableTransactionManagement
-@ComponentScan("com.sociochat.sociochatbackend")
+@ComponentScan("com.sociochat.sociochatbackend.*")
 
 public class DBConfig 
 {
@@ -37,11 +43,13 @@ public class DBConfig
 		{
 			DriverManagerDataSource driverManagerDataSource=new DriverManagerDataSource();
 			driverManagerDataSource.setDriverClassName("oracle.jdbc.driver.OracleDriver");
-			driverManagerDataSource.setUrl("jdbc:oracle:thin:@localhost:1521:sociochat1");
-			driverManagerDataSource.setUsername("sys as sysdba");
-			driverManagerDataSource.setPassword("Satishpalani15");
+			driverManagerDataSource.setUrl("jdbc:oracle:thin:@localhost:1521:socialchat");
+			driverManagerDataSource.setUsername("hr");
+			driverManagerDataSource.setPassword("hr");
+			System.out.println("Oracle Connected");
 			return driverManagerDataSource;
 		}
+		
 		
 		//2.Creating Hibernate Properties which is used by LocalSessionFactory
 		public Properties getHibernateProperties()
@@ -60,7 +68,10 @@ public class DBConfig
 			localSessionFactoryBuilder.addAnnotatedClass(Blog.class);
 			localSessionFactoryBuilder.addAnnotatedClass(UserDetail.class);
 			localSessionFactoryBuilder.addAnnotatedClass(Forum.class);
-			localSessionFactoryBuilder.addAnnotatedClass(Job.class);
+			localSessionFactoryBuilder.addAnnotatedClass(JobDetail.class);
+			localSessionFactoryBuilder.addAnnotatedClass(ForumComments.class);
+			localSessionFactoryBuilder.addAnnotatedClass(BlogComments.class);
+			//
 			System.out.println("SessionFactory Bean Created");
 			return localSessionFactoryBuilder.buildSessionFactory();
 		}
@@ -90,10 +101,23 @@ public class DBConfig
 			return new ForumDaoimpl(sessionFactory);
 		}
 		@Bean(name="jobDAO")
-		public JobDAO getJobDao(SessionFactory sessionFactory)
+		public JobDao getJobDao(SessionFactory sessionFactory)
 		{
 			System.out.println("JobDao object Created");
 			return new JobDaoimpl(sessionFactory);
 		}
+		@Bean("blogCommentsDAO")
+		public BlogCommentsDao getBlogCommentsDAO(SessionFactory sessionFactory)
+		{
+			System.out.println("BlogComments DAO object Created");
+			return new BlogCommentsDaoimpl(sessionFactory);
+		}
+		@Bean("forumCommentsDAO")
+		public ForumCommentsDao getForumCommentsDAO(SessionFactory sessionFactory)
+		{
+			System.out.println("ForumComments DAO object Created");
+			return new ForumCommentsDaoimpl(sessionFactory); 
+		}
 }
+
 

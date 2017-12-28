@@ -8,14 +8,18 @@ import java.util.List;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sociochat.sociochatbackend.Dao.BlogDao;
 import com.sociochat.sociochatbackend.model.Blog;
 
+@Transactional
 public class BlogDaoTest 
 {
 
+	@Autowired
 	static BlogDao blogDAO;
 	
 	@BeforeClass
@@ -27,22 +31,23 @@ public class BlogDaoTest
 		
 		blogDAO=(BlogDao)context.getBean("blogDAO");
 	}
+	
 	@Ignore
 	@Test
 	public void addBlogTest()
 	{
 		Blog blog=new Blog();
-		
-		blog.setBlogId(1001);
+	    blog.setBlogId(304);
 		blog.setBlogName("Core Java");
 		blog.setBlogContent("It is based on Simple Java Concept");
 		blog.setUsername("sunil");
 		blog.setStatus("A");
 		blog.setLikes(3);
 		blog.setCreateDate(new java.util.Date());
-		
+		System.out.println("check");
+		System.out.println(blogDAO);
 		assertTrue("Problem in Inserting Blog",blogDAO.addBlog(blog));
-	
+		System.out.println("check2"); 
 	}
 	@Ignore
 	@Test
@@ -61,7 +66,7 @@ public class BlogDaoTest
 	
 		assertTrue("Problem in deletion", blogDAO.deleteBlog(blog));
 	}
-	@Ignore
+	
 	@Test
 	public void getAllBlogTest()
 	{
@@ -72,7 +77,7 @@ public class BlogDaoTest
 			System.out.println("Blog Id:"+ blog.getBlogId()+":::"+ "Blog Name"+blog.getBlogName());
 		}
 	}
-		
+		@Ignore
 		@Test 
 		public void approveBlog()
 		{
